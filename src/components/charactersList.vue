@@ -1,29 +1,36 @@
 <script>
-import axios from "axios";
+import { store } from "../data/store";
+import CharacterCard from "./CharacterCard.vue";
 
 export default {
     data() {
         return {
-            characters: [],
+            store,
         };
     },
-
-    created() {
-        axios.get("https://db.ygoprodeck.com/api/v7/cardinfo.php?num=10&offset=0").then((response) => {
-            console.log(response);
-            this.characters = response.data.data;
-        });
-    },
+    components: { CharacterCard },
 };
 </script>
 
 <template>
-    <div class="row">
-        <div class="col" v-for="character in characters">
-            <img v-bind:src="character.image_url" alt="">
-            <h3>{{ character.name }}</h3>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 justify-content-center">
+        <div class="bg-dark">
+            <span class="text-light fw-bold">Found</span>
         </div>
+        <CharacterCard v-for="character in store.characters" :key="id" :image="character.card_images[0].image_url"
+            :name="character.name" :archetype="character.archetype" />
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "../assets/scss/partials/variables.scss";
+
+.row {
+    overflow: scroll;
+}
+
+.bg-dark {
+    height: 3rem;
+    width: 87%;
+}
+</style>

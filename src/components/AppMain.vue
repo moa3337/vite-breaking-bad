@@ -7,7 +7,7 @@ export default {
 </script>
 
 <template>
-    <main class="container">
+    <main class="container bg-light pt-4">
         <charactersList />
     </main>
 </template>
