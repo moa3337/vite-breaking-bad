@@ -1,0 +1,6 @@
+@use "./partials/variables" as *;
+
+body {
+    background-color: $bg-2;
+    min-height: 100vh;
+}
