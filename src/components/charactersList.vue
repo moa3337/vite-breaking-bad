@@ -1,19 +1,38 @@
 <script>
 import { store } from "../data/store";
 import CharacterCard from "./CharacterCard.vue";
+import BaseSearch from "./BaseSearch.vue";
+import axios from "axios";
 
 export default {
     data() {
         return {
             store,
+            endpoint: "https://db.ygoprodeck.com/api/v7/cardinfo.php?num=20&offset=0",
         };
     },
-    components: { CharacterCard },
+    components: { CharacterCard, BaseSearch },
+
+    methods: {
+        fatchCharacters(url) {
+            axios.get(url)
+                .then((reponse) => {
+                    store.characters = reponse.data.data;
+                });
+        },
+
+        filterPage(term) {
+            console.log(term);
+            this.fatchCharacters(`${this.endpoint}?archetype=${term}`);
+        },
+    },
+
 };
 </script>
 
 <template>
     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 justify-content-center">
+        <BaseSearch @on-search="filterPage" text="search charatres" />
         <div class="bg-dark">
             <span class="text-light fw-bold">Found</span>
         </div>
@@ -24,10 +43,6 @@ export default {
 
 <style lang="scss" scoped>
 @use "../assets/scss/partials/variables.scss";
-
-.row {
-    overflow: scroll;
-}
 
 .bg-dark {
     height: 3rem;
